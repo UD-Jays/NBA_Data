@@ -5,8 +5,6 @@ import htmlParser as hp
 # EX: https://www.basketball-reference.com/players/e/embiijo01/gamelog/2020
 url_template = "http://www.basketball-reference.com/players/{lastInit}/{lastName5}{firstName2}01/gamelog/{year}"
 
-playerStats_df = pd.DataFrame()
-
 # Creates a pandas dataframe of stats for specific player, specific season
 # Inputs: PlayerName (string, ex: 'Joel Embiid'), Season_Year (string, ex: '2020')
 def getGameLogsSeason(PlayerName, Season):
