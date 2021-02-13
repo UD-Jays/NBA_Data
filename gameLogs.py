@@ -16,7 +16,7 @@ def getGameLogsSeason(PlayerName, Season):
     url = url_template.format(lastInit=lastName[0], lastName5=lastName[0:5], firstName2=firstName[0:2], year=Season)
 
     # build data frame to hold game logs for entire season
-    season_df = pd.DataFrame()
+    seasonLog_df = pd.DataFrame()
 
     # extract HTML table using function built in htmlParser.py
     [column_headers, bulk_data] = hp.parseDataTableFromHTML(url)
