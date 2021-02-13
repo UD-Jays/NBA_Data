@@ -7,7 +7,7 @@ url_template = "http://www.basketball-reference.com/draft/NBA_{year}.html"
 
 draft_df = pd.DataFrame()
 
-for year in range(1966, 2015):
+for year in range(1966, 2020):
     url = url_template.format(year=year)
     
     html = urllib.request.urlopen(url)
