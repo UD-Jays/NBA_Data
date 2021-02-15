@@ -2,10 +2,11 @@ import requests
 import bs4
 
 
-# General function to parse out a list of tables from a block of HTML code
-# Inputs: url (string)
+# General function to parse out a specified table from block of HTML
+# Uses <table> attribute 'caption' to specify table name
+# Inputs: url (string), table_name (string)
 # Outputs: html_tables (list)
-def parseRegSeasonTable(url):
+def parseTableFromHTML(url, table_name):
 
     html = requests.get(url) # retrieve html code from url
     if(html.status_code != 200): # status code = 200 for valid URLs
@@ -13,59 +14,48 @@ def parseRegSeasonTable(url):
         return
     
     soup = bs4.BeautifulSoup(html.content, 'lxml') # create beautifulsoup object
-    season = parseSeasonFromURL(url)
     
     # Parse out all of the <caption. tags in HTML, and specifically find the one titled {Season} Reagular Season Table
     # Then use BeautiFulSoup's find_parent function to pull the table where this caption appears, ie the Regular Season Table of stats
     for caption in soup.findAll('caption'):
-        if(caption.getText() == (season + ' Regular Season Table')):
-            regseason_table = caption.find_parent()
+        if(caption.getText() == table_name):
+            table = caption.find_parent()
 
-    return(regseason_table)
-
-
-# Function to parse out the year (i.e. 2020) from the provided URL
-# Inputs: url (string)
-# Outputs: nba_season (string)
-def parseSeasonFromURL(url):
-
-    calendar_year = int(url[-4:]) # last 4 characters of url
-    
-    # Calendar year 2020 = NBA season 2019-20
-    nba_season = str(calendar_year-1) + '-' + str(calendar_year)[-2:]
-
-    return(nba_season)
+    return(table)
 
 
 # Function to parse out the column headers in the provided table
 # Inputs: tbl (BeautifulSoup object)
 # Outputs: column_headers (list of strings)
 def parseHeadersFromTable(tbl):
-    
-    # table.find('tr') --> Only take the first row from the table, since table headers are repeated every 20 rows
+
+    # tbl.find('tr') --> Only take the first row from the table, since table headers are repeated every 20 rows
     # .findAll('th') --> With that first row, parse out all of the table headers
-    # [x.getText() for x in...] --> for each header returned by soup method, parse out just the text portion (leave behind styling)
+    # [x.getText() for x in...] --> for each header returned by findAll('th'), parse out just the text portion (leave behind styling)
     column_headers = [x.getText() for x in tbl.find('tr').findAll('th')]
 
     return(column_headers)
 
 
-"""     # get headers
-    column_headers = [x.getText() for x in soup.findAll('tr', limit=2)[1].findAll('th')]
-
-    # get our player data
-    data_rows = soup.findAll('tr')[2:]
-
-    #return[column_headers, data_rows] """
-
-"""     # Turn yearly data into a DataFrame
-    year_df = pd.DataFrame(player_data, columns=column_headers)
+# Function to parse out rows of data in the provided table
+# Inputs: tbl (BeautifulSoup object)
+# Outputs: data_rows (list of lists)
+def parseDataFromTable(tbl):
     
-    # Append to the big dataframe
-    draft_df = draft_df.append(year_df, ignore_index=True) """
+    #parse out all rows in tbl, skipping first row since this is the header row
+    rows = tbl.findAll('tr')[1:]
 
-tbl = parseRegSeasonTable('https://www.basketball-reference.com/players/E/embiijo01/gamelog/2020')
+    # [[]... for i in range(len(rows))] --> loop through every row of data in table, storing individual row data in its own list, and the group of rows in an outer list
+    # row[i].findAll('td') --> for each row [i] in list of rows, find all cells tagged by <td>
+    # [x.getText() for x in...] --> for each table cell returned by findAll('td'), parse out just the text portion (leave behind styling)
+    data = [[x.getText() for x in rows[i].findAll('td')] for i in range(len(rows))]
 
-headers = parseHeadersFromTable(tbl)
 
-print(headers)
+    return(data)
+
+
+temp_tbl = parseTableFromHTML('https://www.basketball-reference.com/players/e/embiijo01/gamelog/2020', '2019-20 Regular Season Table')
+temp_headers = parseHeadersFromTable(temp_tbl)
+temp_rows = parseDataFromTable(temp_tbl)
+print(temp_headers)
+print(temp_rows)

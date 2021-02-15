@@ -50,4 +50,4 @@ draft_df.loc[:,'Yrs':'AST'] = draft_df.loc[:,'Yrs':'AST'].astype(int)
 
 draft_df.isnull().sum() # No missing values in our DataFrame
 
-draft_df.to_csv("draft_data_1966_to_2020.csv")
+#draft_df.to_csv("draft_data_1966_to_2020.csv")
