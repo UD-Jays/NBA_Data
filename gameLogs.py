@@ -24,8 +24,9 @@ def getGameLogsSeason(PlayerName, Season):
     game_stats = [[td.getText() for td in bulk_data[i].findAll('td')] for i in range(len(bulk_data))]
 
     # build data frame to hold player's game logs for season
-    seasonLog_df = pd.DataFrame(game_stats, columns=column_headers)
+    #seasonLog_df = pd.DataFrame(game_stats, columns=column_headers)
 
-    return(seasonLog_df)
+    return()
+    #return(seasonLog_df)
 
 getGameLogsSeason('Joel Embiid', '2020')
