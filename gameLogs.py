@@ -30,10 +30,9 @@ def getGameLogURL(PlayerName, Season):
 
 
 # Function to build pandas dataframe of stats for specific player, specific season
-# Inputs: PlayerName (string, ex: 'Joel Embiid'), Season_Year (string, ex: '2020')
+# Inputs: PlayerName (string), Year (string, ex: '2020')
 # Outputs: seasonLog_df (pandas dataframe)
 def getGameLogsSeason(PlayerName, Year):
-
 
     # parse HTML table using function built in htmlParser.py
     url = getGameLogURL(PlayerName, Year)
@@ -41,15 +40,33 @@ def getGameLogsSeason(PlayerName, Year):
     
     HTML_tbl = hp.parseTableFromHTML(url, table_name)
     
-    column_headers = hp.parseHeadersFromTable(HTML_tbl)
-    column_headers.pop(0) # get ride of 'Rank' column
+    if(HTML_tbl == None):
+        return
+    else:
+        column_headers = hp.parseHeadersFromTable(HTML_tbl)
+        column_headers.pop(0) # get ride of 'Rank' column
     
-    data_rows = hp.parseDataFromTable(HTML_tbl)
+        data_rows = hp.parseDataFromTable(HTML_tbl)
 
-    # build pandas dataframe to hold game log stats, using parsed info
-    seasonLog_df = pd.DataFrame(data_rows, columns=column_headers)
+        # build pandas dataframe to hold game log stats, using parsed info
+        seasonLog_df = pd.DataFrame(data_rows, columns=column_headers)
 
-    return(seasonLog_df)
+        return(seasonLog_df)
 
 
-gamelogs_df = getGameLogsSeason('Joel Embiid', '2020')
+# Function to build pandas dataframe to hold stats for specific player, entire career
+# Career = 1900 to present
+# Inputs: PlayerName (string, ex: 'Joel Embiid')
+# Outputs: careerLog_df (pandas dataframe)
+def getGameLogsCareer(PlayerName):
+
+    careerLog_df = pd.DataFrame()
+    
+    for year in range(1900, 2021):
+        season_df = getGameLogsSeason(PlayerName, str(year))
+        careerLog_df.append(season_df)
+
+    return(careerLog_df)
+
+
+temp = getGameLogsCareer('Joel Embiid')

@@ -17,6 +17,8 @@ def parseTableFromHTML(url, table_name):
     
     # Parse out all of the <caption. tags in HTML, and specifically find the one titled {Season} Reagular Season Table
     # Then use BeautiFulSoup's find_parent function to pull the table where this caption appears, ie the Regular Season Table of stats
+    # If no table is found with table_name, None is returned
+    table = None
     for caption in soup.findAll('caption'):
         if(caption.getText() == table_name):
             table = caption.find_parent()
@@ -52,10 +54,3 @@ def parseDataFromTable(tbl):
 
 
     return(data)
-
-
-temp_tbl = parseTableFromHTML('https://www.basketball-reference.com/players/e/embiijo01/gamelog/2020', '2019-20 Regular Season Table')
-temp_headers = parseHeadersFromTable(temp_tbl)
-temp_rows = parseDataFromTable(temp_tbl)
-print(temp_headers)
-print(temp_rows)
