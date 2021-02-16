@@ -69,4 +69,4 @@ def getGameLogsCareer(PlayerName):
     return(careerLog_df)
 
 
-temp = getGameLogsCareer('Joel Embiid')
+temp = getGameLogsSeason('Joel Embiid', '2020')
