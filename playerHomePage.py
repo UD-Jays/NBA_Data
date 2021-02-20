@@ -31,7 +31,6 @@ def getPlayerHomePage(PlayerName):
         return
     else:
         column_headers = hp.parseHeadersFromTable(HTML_tbl)
-        #column_headers.pop(0) # get ride of 'Rank' column
     
         data_rows = hp.parseDataFromTable(HTML_tbl)
 
@@ -42,3 +41,4 @@ def getPlayerHomePage(PlayerName):
 
 
 x = getPlayerHomePage('Joel Embiid')
+

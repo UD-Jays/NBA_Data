@@ -50,7 +50,7 @@ def parseDataFromTable(tbl):
     # [[]... for i in range(len(rows))] --> loop through every row of data in table, storing individual row data in its own list, and the group of rows in an outer list
     # row[i].findAll('td') --> for each row [i] in list of rows, find all cells tagged by <td>
     # [x.getText() for x in...] --> for each table cell returned by findAll('td'), parse out just the text portion (leave behind styling)
-    data = [[x.getText() for x in rows[i].findAll('td')] for i in range(len(rows))]
+    data = [[x.getText() for x in rows[i].findAll(['th','td'])] for i in range(len(rows))]
 
 
     return(data)
