@@ -62,11 +62,10 @@ def getGameLogsCareer(PlayerName):
 
     careerLog_df = pd.DataFrame()
     
-    for year in range(1994, 2021):
+    for year in range(2018, 2021):
         season_df = getGameLogsSeason(PlayerName, str(year))
-        print(year)
-        print(season_df is not None)
-        if(season_df is not None): careerLog_df.append(season_df)
+        if(season_df is not None): 
+            careerLog_df = careerLog_df.append(season_df)
 
     return(careerLog_df)
 
