@@ -21,8 +21,8 @@ def getGameLogURL(PlayerName, Season):
 
     url_template = "http://www.basketball-reference.com/players/{lastInit}/{lastName5}{firstName2}01/gamelog/{year}"
 
-    firstName = PlayerName.split()[0]
-    lastName = PlayerName.split()[1]
+    firstName = PlayerName.split()[0].lower()
+    lastName = PlayerName.split()[1].lower()
 
     url = url_template.format(lastInit=lastName[0], lastName5=lastName[0:5], firstName2=firstName[0:2], year=Season)
 
@@ -62,11 +62,13 @@ def getGameLogsCareer(PlayerName):
 
     careerLog_df = pd.DataFrame()
     
-    for year in range(1900, 2021):
+    for year in range(1994, 2021):
         season_df = getGameLogsSeason(PlayerName, str(year))
-        careerLog_df.append(season_df)
+        print(year)
+        print(season_df is not None)
+        if(season_df is not None): careerLog_df.append(season_df)
 
     return(careerLog_df)
 
 
-temp = getGameLogsSeason('Joel Embiid', '2020')
+x = getGameLogsCareer('Joel Embiid')
