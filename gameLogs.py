@@ -68,7 +68,7 @@ def getGameLogsCareer(PlayerName):
         season_df = getGameLogsSeason(PlayerName, str(year))
         if(season_df is not None):
             if(len(season_df.columns) >= 30):
-                careerLog_df = careerLog_df.append(season_df)
+                careerLog_df = careerLog_df.append(season_df, ignore_index=True)
 
     #careerLog_df.drop('Rk')
     return(careerLog_df)
