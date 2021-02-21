@@ -44,14 +44,14 @@ def getGameLogsSeason(PlayerName, Year):
         return(None)
     else:
         column_headers = hp.parseHeadersFromTable(HTML_tbl)
-        #column_headers.pop(0) # get ride of 'Rank' column
     
         data_rows = hp.parseDataFromTable(HTML_tbl)
 
         # build pandas dataframe to hold game log stats, using parsed info
         seasonLog_df = pd.DataFrame(data_rows, columns=column_headers)
-
         seasonLog_df = seasonLog_df[seasonLog_df.Rk != 'Rk']
+        seasonLog_df = seasonLog_df.drop(columns='Rk')
+        seasonLog_df = seasonLog_df[seasonLog_df.G != '']
 
         return(seasonLog_df)
 
@@ -64,14 +64,13 @@ def getGameLogsCareer(PlayerName):
 
     careerLog_df = pd.DataFrame()
     
-    for year in range(2000, 2021):
+    for year in range(2010, 2021):
         season_df = getGameLogsSeason(PlayerName, str(year))
         if(season_df is not None):
-            if(len(season_df.columns) >= 30):
+            if(len(season_df.columns) >= 29):
                 careerLog_df = careerLog_df.append(season_df, ignore_index=True)
 
-    #careerLog_df.drop('Rk')
     return(careerLog_df)
 
 
-x = getGameLogsCareer('Ben Simmons')
+x = getGameLogsCareer('Joel Embiid')
