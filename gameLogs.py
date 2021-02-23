@@ -73,4 +73,7 @@ def getGameLogsCareer(PlayerName):
     return(careerLog_df)
 
 
-x = getGameLogsCareer('Joel Embiid')
+
+def plotSixersGameLogs(Year);
+    
+embiid_df = getGameLogsCareer('Joel Embiid')
